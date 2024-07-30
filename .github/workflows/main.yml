@@ -1,0 +1,27 @@
+name: Publish 🚀
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - master
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x'
+          
+      - name: Restore
+        run: dotnet restore ./ASP_APP.csproj
+        
+      - name: Build
+        run: dotnet build ./ASP_APP.csproj --configuration Release --no-restore
+        
+      - name: Publish
+        run: dotnet publish ./ASP_APP.csproj --configuration Release --no-build 
