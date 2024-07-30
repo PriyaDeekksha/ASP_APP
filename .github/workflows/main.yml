@@ -3,7 +3,6 @@ name: Publish 🚀
 env:
   AZURE_WEBAPP_NAME: ASP-SRV
   AZURE_WEBAPP_PACKAGE_PATH: "./publish"
-
 on:
   workflow_dispatch:
   push:
