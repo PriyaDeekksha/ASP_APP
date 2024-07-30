@@ -1,5 +1,9 @@
 name: Publish 🚀
 
+env:
+  AZURE_WEBAPP_NAME: ASP-SRV
+  AZURE_WEBAPP_PACKAGE_PATH: "./publish"
+
 on:
   workflow_dispatch:
   push:
@@ -24,4 +28,11 @@ jobs:
         run: dotnet build ./ASP_APP.csproj --configuration Release --no-restore
         
       - name: Publish
-        run: dotnet publish ./ASP_APP.csproj --configuration Release --no-build 
+        run: dotnet publish ./ASP_APP.csproj --configuration Release --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+
+      - name: Deployment
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
